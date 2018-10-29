@@ -15,6 +15,16 @@ export default class Todo extends React.Component  {
 
     }
 
+    marcaFeito(todo){
+        axios.put(`${URL}/${todo._id}`,{...todo, done: true})
+        .then(resp => this.atualiza());
+    }
+
+    marcaPendente(todo){
+        axios.put(`${URL}/${todo._id}`,{...todo, done: false})
+        .then(resp => this.atualiza());
+    }
+
     atualiza() {
         axios.get(`${URL}?sort=-createAt`)
         .then(resp => {
@@ -48,7 +58,9 @@ export default class Todo extends React.Component  {
                            description={this.state.description}
                            alteracao={this.alteracao.bind(this)} />
                 <TodoList list={this.state.list} 
-                          remover={this.remover.bind(this)}  />
+                          remover={this.remover.bind(this)} 
+                          marcaFeito={this.marcaFeito.bind(this)}
+                          marcaPendente={this.marcaPendente.bind(this)}/>
              </div>
         );
     }
