@@ -17,20 +17,24 @@ export default class Todo extends React.Component  {
 
     marcaFeito(todo){
         axios.put(`${URL}/${todo._id}`,{...todo, done: true})
-        .then(resp => this.atualiza());
+        .then(resp => this.atualiza(this.state.description));
     }
 
     marcaPendente(todo){
         axios.put(`${URL}/${todo._id}`,{...todo, done: false})
-        .then(resp => this.atualiza());
+        .then(resp => this.atualiza(this.state.description));
     }
 
-    atualiza() {
-        axios.get(`${URL}?sort=-createAt`)
+    atualiza(description = '') {
+        const pesquisa = description ? `&description__regex=/${description}/` : '';
+        axios.get(`${URL}?sort=-createAt${pesquisa}`)
         .then(resp => {
-           this.setState({...this.state, description:'', list: resp.data})
-           console.log(this.state.list)
+           this.setState({...this.state, description: description, list: resp.data})
         });
+    }
+
+    pesquisar(){
+        this.atualiza(this.state.description);
     }
 
     adicionar() {
@@ -46,8 +50,12 @@ export default class Todo extends React.Component  {
         .then(resp => this.atualiza());
     }
 
-    alteracao(event) {
+    prenchimentoInput(event) {
         this.setState({...this.state, description: event.target.value});
+    }
+
+    limpar() {
+     this.atualiza();
     }
 
     render() {
@@ -56,7 +64,9 @@ export default class Todo extends React.Component  {
                 <PageHeader nome='Tarefas ' small='cadastro'> </PageHeader>
                 <TodoForm  adicionarTaferefa={this.adicionar.bind(this)} 
                            description={this.state.description}
-                           alteracao={this.alteracao.bind(this)} />
+                           prenchimentoInput={this.prenchimentoInput.bind(this)}
+                           pesquisar={this.pesquisar.bind(this)}
+                           limpar={this.limpar.bind(this)} />
                 <TodoList list={this.state.list} 
                           remover={this.remover.bind(this)} 
                           marcaFeito={this.marcaFeito.bind(this)}

@@ -12,7 +12,7 @@ export default props => {
                 <td>
                     <Botao style='success' icon='check' onClick={() => props.marcaFeito(todo)} hide={todo.done}/>
                     <Botao style='warning' icon='undo' onClick={() => props.marcaPendente(todo)} hide={!todo.done} />
-                    <Botao style='danger' icon='trash-o' onClick={() => props.remover(todo)} />
+                    <Botao style='danger' icon='trash-o' onClick={() => props.remover(todo)} hide={!todo.done} />
                 </td>
             </tr>
         ));
@@ -23,7 +23,7 @@ export default props => {
                 <thead> 
                     <tr> 
                         <th>Descrição</th>
-                        <th>Operações</th>
+                        <th className='tableActions'>Operações</th>
                     </tr>
                 </thead>
                 <tbody> 
