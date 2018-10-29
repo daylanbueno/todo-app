@@ -4,21 +4,36 @@ import PageHeader  from '../../src/main/template/pageHeader';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
-const URL = 'localhost:3003/api/todo'
+const URL = 'http://localhost:3000/api/todos';
+
 export default class Todo extends React.Component  {
     
     constructor(props) {
         super(props);
         this.state = { description: '', list:[] }
+        this.atualiza();
 
     }
 
+    atualiza() {
+        axios.get(`${URL}?sort=-createAt`)
+        .then(resp => {
+           this.setState({...this.state, description:'', list: resp.data})
+           console.log(this.state.list)
+        });
+    }
+
     adicionar() {
-        const descricao = this.state.description;
-        axios.post(URL, { descricao } )
-        .then(resp => 
-            console.log('Deu bom')
-        )
+        const description = this.state.description;
+        console.log(description);
+        axios.post(URL, {  description  })
+        .then(resp =>   this.atualiza())
+    }
+
+    remover(todo) {
+        console.log(todo)
+        axios.delete(`${URL}/${todo._id}`)
+        .then(resp => this.atualiza());
     }
 
     alteracao(event) {
@@ -32,7 +47,8 @@ export default class Todo extends React.Component  {
                 <TodoForm  adicionarTaferefa={this.adicionar.bind(this)} 
                            description={this.state.description}
                            alteracao={this.alteracao.bind(this)} />
-                <TodoList />
+                <TodoList list={this.state.list} 
+                          remover={this.remover.bind(this)}  />
              </div>
         );
     }

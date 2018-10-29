@@ -8,6 +8,6 @@ module.exports  = function(server) {
 
     // Todas as rotas
     const todoService = require('../api/todo/todoService');
-    todoService.register(router,'/todo');
+    todoService.register(router,'/todos');
     
 }

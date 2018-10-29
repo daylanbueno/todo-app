@@ -1,9 +1,33 @@
 import React from 'react';
+import Botao from '../main/template/Botao';
 
 export default props => {
+
+    const renderRows = () => {
+        const list = props.list || [];
+        console.log(list)
+        return list.map(todo => (
+            <tr key={todo._id}> 
+                <td>{todo.description}</td>
+                <td>
+                    <Botao style='danger' icon='trash-o' onClick={() => props.remover(todo)} />
+                </td>
+            </tr>
+        ));
+    }
+
     return (
-        <div>
-            <h1> Lista de dados</h1>
-        </div>
+        <table className='table'> 
+                <thead> 
+                    <tr> 
+                        <th>Descrição</th>
+                        <th>Operações</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    {renderRows()}
+                </tbody>
+            </table>
+        
     )
 }

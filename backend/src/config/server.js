@@ -1,16 +1,16 @@
-const port  = 3003;
+const port  = 3000;
 
-const bodyPaser = require('body-parser'); //responsavel por fazer o parser.
-const express = require('express'); //servidor
-const server = express(); 
-const allowCors = require('./cors'); // declarando 
+const bodyParser = require('body-parser')
+const express = require('express')
+const server = express()
+const allowCors = require('./cors')
 
-server.use(bodyPaser.urlencoded({extended: true})); // falando que bady parser vai fazer o parser maximo arquivo  usa para todas as requisições.
-server.use(bodyPaser.json());
-server.use(allowCors); // registrando.
+server.use(bodyParser.urlencoded({ extended: true }))
+server.use(bodyParser.json())
+server.use(allowCors)
 
-server.listen(port , function() {
-    console.log(`Servidor - backand está executando na porta ${port}.`)
+server.listen(port, function() {
+    console.log(`Servidor backend rodando na porta ${port}.`)
 })
 
-module.exports = server;
+module.exports = server
